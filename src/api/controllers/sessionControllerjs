@@ -1,0 +1,17 @@
+const Session = require('../models/sessionModel');
+
+exports.createRoom = async (req, res) => {
+    const newSession = new Session();
+    await newSession.save();
+    res.status(201).json({ roomId: newSession._id, message: "Room created successfully" });
+};
+
+exports.joinRoom = async (req, res) => {
+    const { roomId } = req.body;
+    const session = await Session.findById(roomId);
+    if (!session) {
+        return res.status(404).json({ message: "Room not found" });
+    }
+    // Further logic to handle the joining process
+    res.status(200).json({ message: "Joined room successfully", roomId });
+};
